@@ -26,16 +26,18 @@ func (t *Trie) AddRunes(s []rune) {
     sub.AddRunes(s[1:])
 }
 
-func (t *Trie) printRec(depth int) {
-    for k, v := range t.children {
-        for i := 0; i < depth; i++ {
-            fmt.Print("  ")
+func (t *Trie) String() string {
+    ret := ""
+    var rec func (t *Trie, depth int)
+    rec = func (t *Trie, depth int) {
+        for k, v := range t.children {
+            for i := 0; i < depth; i++ {
+                ret += "  "
+            }
+            ret += fmt.Sprintf("%c\n", k)
+            rec(v, depth + 1)
         }
-        fmt.Printf("%c\n", k)
-        v.printRec(depth + 1)
     }
-}
-
-func (t *Trie) Print() {
-    t.printRec(0)
+    rec(t, 0)
+    return ret
 }

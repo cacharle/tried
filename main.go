@@ -1,10 +1,14 @@
 package main
 
-import "github.com/cacharle/tried/trie"
+import (
+	"fmt"
+
+	"github.com/cacharle/tried/trie"
+)
 
 func main() {
     t := trie.New()
     t.AddString("bonjour")
     t.AddString("bonsoir")
-    t.Print()
+    fmt.Print(t)
 }
