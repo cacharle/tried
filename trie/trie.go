@@ -35,19 +35,23 @@ func (t *Trie) Delete(s string) {
     t.DeleteRunes([]rune(s))
 }
 
-func (t *Trie) DeleteRunes(s []rune) {
-    // TODO:
+// TODO: that deletes the entier prefix
+func (t *Trie) deleteRunesRec(s []rune) bool {
     if len(s) == 0 {
         if t.end {
             t.end = false
         }
-        return
+        return true
     }
-    t.DeleteRunes(s[1:])
-    if len(t.children) == 1 {
+    found := t.children[s[0]].deleteRunesRec(s[1:])
+    if found {
         delete(t.children, s[0])
     }
+    return false
+}
 
+func (t *Trie) DeleteRunes(s []rune) {
+    t.deleteRunesRec(s)
 }
 
 func (t *Trie) Contains(s string) bool {
@@ -97,6 +101,14 @@ func (t *Trie) AtPrefixRunes(prefix []rune) *Trie {
     return prefixed
 }
 
+func (t *Trie) NodeCount() uint {
+    var count uint = 1
+    for _, sub := range t.children {
+        count += sub.NodeCount()
+    }
+    return count
+}
+
 func (t *Trie) String() string {
     ret := ""
     var rec func (t *Trie, depth int)
@@ -107,7 +119,6 @@ func (t *Trie) String() string {
             }
             if v.end {
                 ret += fmt.Sprintf("%c*\n", k)
-
             } else {
                 ret += fmt.Sprintf("%c \n", k)
             }

@@ -26,11 +26,20 @@ func main() {
     // t.Insert("aurevoir")
     // t.Insert("good")
     // t.Insert("goodbye")
-    // fmt.Print(t)
+    // // fmt.Print(t)
+    //
+    // t.Delete("goodbye")
+    // t.Delete("bonsoir")
 
-    for _, w := range t.AtPrefix("hell").Words() {
-        fmt.Println(w)
-    }
+    // fmt.Println(t.NodeCount())
+
+    fmt.Println(len(t.Words()))
+    t.Delete("hell")
+    fmt.Println(len(t.Words()))
+
+    // for _, w := range t.Words() {
+    //     fmt.Println(w)
+    // }
 
 
 
