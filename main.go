@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"flag"
 	"fmt"
 	"log"
 	"os"
@@ -9,39 +10,27 @@ import (
 	"github.com/cacharle/tried/trie"
 )
 
-func main() {
-    t := trie.New()
+const defaultDictFilePath = "/usr/share/dict/words"
 
-    file, err := os.Open("/usr/share/dict/words")
+func main() {
+    dictFilePath := flag.String("dict", defaultDictFilePath, "file which contains the words registered for autocompletion")
+    prefix := flag.String("prefix", "", "print words starting with the prefix")
+    flag.Parse()
+
+    t := trie.New()
+    file, err := os.Open(*dictFilePath)
     if err != nil {
         log.Fatal(err)
     }
+    log.Printf("Loading dictionary at %v", *dictFilePath)
     scanner := bufio.NewScanner(file)
     for scanner.Scan() {
         t.Insert(scanner.Text())
     }
+    log.Printf("Created trie with %v nodes", t.NodeCount())
 
-    // t.Insert("bonsoir")
-    // t.Insert("bonjour")
-    // t.Insert("aurevoir")
-    // t.Insert("good")
-    // t.Insert("goodbye")
-    // // fmt.Print(t)
-    //
-    // t.Delete("goodbye")
-    // t.Delete("bonsoir")
-
-    // fmt.Println(t.NodeCount())
-
-    fmt.Println(len(t.Words()))
-    t.Delete("hell")
-    fmt.Println(len(t.Words()))
-
-    // for _, w := range t.Words() {
-    //     fmt.Println(w)
-    // }
-
-
-
-    // fmt.Println(t.Contains("bonjour"))
+    fmt.Printf("Words starting with %#v\n", *prefix)
+    for _, w := range t.AtPrefix(*prefix).Words() {
+        fmt.Println(w)
+    }
 }
