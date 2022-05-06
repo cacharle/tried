@@ -22,7 +22,7 @@ func putLineAt(screen tcell.Screen, style tcell.Style, line_num int, content str
 
 func main() {
     dictFilePath := flag.String("dict", defaultDictFilePath, "File which contains the words registered for autocompletion")
-    prefixOption := flag.String("prefix", "", "print words starting with the prefix")
+    prefixOption := flag.String("prefix", "", "Get a trie that only starts with a prefix")
     printDot := flag.Bool("dot", false, "Dump a dot representation of the trie for graphviz")
     printWords := flag.Bool("words", false, "Print the words contained in the trie")
     flag.Parse()

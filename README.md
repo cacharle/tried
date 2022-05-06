@@ -5,7 +5,17 @@ A trie data structure implementation in Go.
 ## Usage
 
 ```
-$ go run main.go -h
+$ go build
+$ ./tried -help
+Usage of ./tried:
+  -dict string
+        File which contains the words registered for autocompletion (default "/usr/share/dict/words")
+  -dot
+        Dump a dot representation of the trie for graphviz
+  -prefix string
+        Get a trie that only starts with a prefix
+  -words
+        Print the words contained in the trie
 ```
 
 ### Graphviz
