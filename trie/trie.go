@@ -96,8 +96,12 @@ func (t *Trie) AtPrefixRunes(prefix []rune) *Trie {
     if !ok {
         return nil
     }
+    subPrefix := sub.AtPrefixRunes(prefix[1:])
+    if subPrefix == nil {
+        return nil
+    }
     prefixed := New()
-    prefixed.children[prefix[0]] = sub.AtPrefixRunes(prefix[1:])
+    prefixed.children[prefix[0]] = subPrefix
     return prefixed
 }
 
