@@ -16,7 +16,7 @@ const defaultDictFilePath = "/usr/share/dict/words"
 
 func putLineAt(screen tcell.Screen, style tcell.Style, line_num int, content string) {
     for i, c := range content {
-        screen.SetContent(i + 1, line_num + 1, c, nil, style)
+        screen.SetContent(i + 1, line_num, c, nil, style)
     }
 }
 
@@ -67,7 +67,7 @@ func main() {
         log.Fatal(err)
     }
     defer screen.Fini()
-    style := tcell.StyleDefault.Background(tcell.ColorBlack).Foreground(tcell.ColorWhite)
+    style := tcell.StyleDefault.Background(tcell.NewRGBColor(17, 17, 17)).Foreground(tcell.ColorWhite)
     screen.SetStyle(style)
     screen.HideCursor()
     _, height := screen.Size()
@@ -75,7 +75,9 @@ func main() {
     running := true
     for running {
         screen.Clear()
-        putLineAt(screen, style, 0, ">>> " + prefix)
+        putLineAt(screen, style, 0, "Help: Escape or Ctrl+c to quit, Ctrl+u to clear prefix")
+        putLineAt(screen, style, 1, ">>> " + prefix)
+        screen.ShowCursor(len(prefix) + 5, 1)
         foundTrie := t.AtPrefix(prefix)
         if foundTrie != nil {
             words := foundTrie.Words()
@@ -86,7 +88,7 @@ func main() {
                 words = words[:height]
             }
             for i, w := range words {
-                putLineAt(screen, style, i + 1, w)
+                putLineAt(screen, style, i + 2, w)
             }
         }
         screen.Show()
