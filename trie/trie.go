@@ -132,3 +132,25 @@ func (t *Trie) String() string {
     rec(t, 0)
     return ret
 }
+
+func (t *Trie) DumpDot() {
+    fmt.Println("digraph trie {")
+    fmt.Println("    color=white;")
+    fmt.Println("    bgcolor=\"#111111\";")
+    t.dumpDotRec('_')
+    fmt.Println("}")
+}
+
+func (t *Trie) dumpDotRec(label rune) {
+    fmt.Printf("    node_%p [bgcolor=white] [fontsize=25] [fontcolor=white] [label=%c]", t, label)
+    if !t.end {
+        fmt.Print(" [color=white]")
+    } else {
+        fmt.Print(" [color=green]")
+    }
+    fmt.Println(";")
+    for k, sub := range t.children {
+        fmt.Printf("    node_%p -> node_%p [bgcolor=white] [color=white];\n", t, sub)
+        sub.dumpDotRec(k)
+    }
+}

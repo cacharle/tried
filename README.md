@@ -8,6 +8,14 @@ A trie data structure implementation in Go.
 $ go run main.go -h
 ```
 
+### Graphviz
+
+![trie-graph](trie-graph.png)
+
+```
+$ go run main.go | dot -Tpng > graph.png
+```
+
 ## References
 
 - [Wikipedia][1]
@@ -17,7 +25,7 @@ $ go run main.go -h
 ## TODO
 
 - [ ] Sort the prefix result by edit distance
-- [ ] Convert trie to a graphviz dot file
+- [x] Convert trie to a graphviz dot file
 - [x] Make autocompletion with ncurses
 - [ ] Optimize by triming the nodes with only one child (radix tree)
       ```
