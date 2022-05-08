@@ -8,9 +8,11 @@ import (
 	"os"
 	"sort"
 
+	"github.com/cacharle/tried/lev"
 	"github.com/cacharle/tried/trie"
 	"github.com/gdamore/tcell"
 )
+
 
 const defaultDictFilePath = "/usr/share/dict/words"
 
@@ -52,7 +54,9 @@ func main() {
 
     if *printWords {
         fmt.Printf("Words starting with prefix: %#v\n", *prefixOption)
-        for _, w := range t.AtPrefix(*prefixOption).Words() {
+        words := t.AtPrefix(*prefixOption).Words()
+        sort.Slice(words, lev.DistanceCmpFuncFactory(*prefixOption, words))
+        for _, w := range words {
             fmt.Println(w)
         }
         return
@@ -81,9 +85,7 @@ func main() {
         foundTrie := t.AtPrefix(prefix)
         if foundTrie != nil {
             words := foundTrie.Words()
-            sort.Slice(words, func(i, j int) bool {
-                return words[i] < words[j]
-            })
+            sort.Slice(words, lev.DistanceCmpFuncFactory(prefix, words))
             if len(words) > height {
                 words = words[:height]
             }
@@ -108,7 +110,6 @@ func main() {
             } else {
                 prefix += string(ev.Rune())
             }
-
         }
     }
 }

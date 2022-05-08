@@ -89,6 +89,7 @@ func (t *Trie) AtPrefix(prefix string) *Trie {
 }
 
 func (t *Trie) AtPrefixRunes(prefix []rune) *Trie {
+    // TODO: use unicode.ToLower to make it case insensitive
     if len(prefix) == 0 {
         return t
     }
